@@ -10,14 +10,15 @@ import (
 //Account representacao de uma conta de um banco no sistema
 type Account struct {
 	OwnerName string `json:"owner_name" valid:"notnull"`
-	Bank *Bank `json:"bank" valid:"-"`
-	Number string `json:"number" valid:"notnull"`
-	Base `valid:"required"`
-} 
+	Bank      *Bank  `json:"bank" valid:"-"`
+	Number    string `json:"number" valid:"notnull"`
+	Base      `valid:"required"`
+	PixKeys   []*PixKey `valid:"-"`
+}
 
 func (a *Account) isValid() error {
 	_, err := govalidator.ValidateStruct(a)
-	if(err != nil) {
+	if err != nil {
 		return err
 	}
 	return nil
@@ -26,8 +27,8 @@ func (a *Account) isValid() error {
 //NewAccount cria a entidade uma conta
 func NewAccount(bank *Bank, number string, ownerName string) (*Account, error) {
 	account := Account{
-		Bank: bank,
-		Number: number,
+		Bank:      bank,
+		Number:    number,
 		OwnerName: ownerName,
 	}
 
@@ -36,7 +37,7 @@ func NewAccount(bank *Bank, number string, ownerName string) (*Account, error) {
 	account.UpdatedAt = time.Now()
 
 	err := account.isValid()
-	if(err != nil){
+	if err != nil {
 		return nil, err
 	}
 

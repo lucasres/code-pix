@@ -2,20 +2,22 @@ package model
 
 import (
 	"time"
+
 	"github.com/asaskevich/govalidator"
 	uuid "github.com/satori/go.uuid"
 )
 
 //Bank estrutura de dados que se referencia ao banco na nossa aplicacao
 type Bank struct {
-	Code string `json:"code" valid:"notnull"`
-	Name string `json:"name" valid:"notnull"`
-	Base `valid:"required"`
+	Code     string     `json:"code" valid:"notnull"`
+	Name     string     `json:"name" valid:"notnull"`
+	Accounts []*Account `valid:"-"`
+	Base     `valid:"required"`
 }
 
 func (b *Bank) isValid() error {
 	_, err := govalidator.ValidateStruct(b)
-	if (err != nil) {
+	if err != nil {
 		return err
 	}
 	return nil
@@ -34,7 +36,7 @@ func NewBank(code string, name string) (*Bank, error) {
 
 	err := bank.isValid()
 
-	if (err != nil) {
+	if err != nil {
 		return nil, err
 	}
 
