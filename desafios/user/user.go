@@ -29,8 +29,7 @@ func NewUser(name string, email string) (*User, error) {
 		Email: email,
 	}
 
-	u, _ := uuid.NewV4()
-	user.ID = u.String()
+	user.ID = uuid.NewV4().String()
 
 	err := user.isValid()
 	if err != nil {
