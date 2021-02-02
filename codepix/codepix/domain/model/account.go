@@ -9,11 +9,12 @@ import (
 
 //Account representacao de uma conta de um banco no sistema
 type Account struct {
-	OwnerName string `json:"owner_name" valid:"notnull"`
+	OwnerName string `json:"owner_name" valid:"notnull" gorm:"column:owner_name;type:varchat(255);not null"`
 	Bank      *Bank  `json:"bank" valid:"-"`
-	Number    string `json:"number" valid:"notnull"`
+	Number    string `json:"number" valid:"notnull" gorm:"type:varchat(20);not null"`
+	BankID    string `gorm:"column:bank_id;type:uuid;not null" valid:"-"`
 	Base      `valid:"required"`
-	PixKeys   []*PixKey `valid:"-"`
+	PixKeys   []*PixKey `valid:"-" gorm:"ForeignKey:AccountID"`
 }
 
 func (a *Account) isValid() error {

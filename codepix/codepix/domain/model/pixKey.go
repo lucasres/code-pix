@@ -9,9 +9,13 @@ import (
 )
 
 const (
+	//PixKeyActiveStatus chave ativa
 	PixKeyActiveStatus   string = "active"
+	//PixKeyInactiveStatus chave inativa
 	PixKeyInactiveStatus string = "inactive"
+	//PixKeyKindCPF tipo de chave CPF
 	PixKeyKindCPF        string = "cpf"
+	//PixKeyKindEmail tipo de chave email
 	PixKeyKindEmail      string = "email"
 )
 
@@ -19,12 +23,13 @@ const (
 type PixKey struct {
 	Kind      string   `json:"kind" valid:"notnul"`
 	Key       string   `json:"key" valid:"notnull"`
-	AccountID string   `json:"account_id" valid:"notnull"`
+	AccountID string   `gorm:"column:account_id;type:uuid;not null" valid:"-"`
 	Account   *Account `json:"account" valid:"-"`
 	Status    string   `json:"status" valid:"notnull"`
 	Base      `valid:"required"`
 }
 
+//PixKeyRepositoryInterface contrato de repositorio
 type PixKeyRepositoryInterface interface {
 	Register(pixKey *PixKey) (*PixKey, error)
 	FindKeyByKind(key string, kind string) (*PixKey, error)

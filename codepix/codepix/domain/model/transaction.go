@@ -9,26 +9,33 @@ import (
 )
 
 const (
+	// TransactionPedding transacao pendente
 	TransactionPedding   string = "pedding"
+	// TransactionCompleted transacao completada
 	TransactionCompleted string = "completed"
+	// TransactionError transacao com error
 	TransactionError     string = "error"
+	// TransactionConfirmed transacao confirmada
 	TransactionConfirmed string = "confirmed"
 )
-
+//Transaction representacao de transacoes
 type Transaction struct {
 	AccountFrom       *Account `json:"account_from" valid:"notnull"`
+	AccountFromID     string   `gorm:"column:account_from_id;type:uuid;" valid:"notnull"`
 	Amount            float64  `json:"amount" valid:"notnull"`
 	PixKeyTo          *PixKey  `json:"pixkey_to" valid:"-"`
-	Status            string   `json:"status" valid:"notnull"`
-	Description       string   `json:"description" valid:"notnull"`
-	CancelDescription string   `json:"cancel_description" valid:"-"`
+	PixKeyIDTo        *PixKey  `gorm:"column:pix_key_id_to;type:uuid;" valid:"notnull"`
+	Status            string   `json:"status" valid:"notnull" gorm:"type:varchar(20)"`
+	Description       string   `json:"description" valid:"-" gorm:"type:varchar(255)"`
+	CancelDescription string   `json:"cancel_description" valid:"-" gorm:"type:varchar(255)"`
 	Base              `valid:"required"`
 }
 
+// Transactions lista de transacoes
 type Transactions struct {
 	Transaction []Transaction
 }
-
+// TransactionRepositoryInterface contrato para criacao de um repository de transacoes
 type TransactionRepositoryInterface interface {
 	Register(transaction *Transaction) (*Transaction, error)
 	Save(transaction *Transaction) (*Transaction, error)
@@ -57,6 +64,7 @@ func (t *Transaction) isValid() error {
 	return nil
 }
 
+// Complete funcao para completar a transacao
 func (t *Transaction) Complete() error {
 	t.Status = TransactionCompleted
 	t.UpdatedAt = time.Now()
@@ -69,6 +77,7 @@ func (t *Transaction) Complete() error {
 	return nil
 }
 
+// Confirm funcao para confirmar a transacao
 func (t *Transaction) Confirm() error {
 	t.Status = TransactionConfirmed
 	t.UpdatedAt = time.Now()
@@ -78,6 +87,7 @@ func (t *Transaction) Confirm() error {
 	return err
 }
 
+// Cancel funcao para cancelar a transacao
 func (t *Transaction) Cancel(description string) error {
 	t.Status = TransactionError
 	t.UpdatedAt = time.Now()
@@ -88,6 +98,7 @@ func (t *Transaction) Cancel(description string) error {
 	return err
 }
 
+// NewTransaction cria uma nova instancia de transacao
 func NewTransaction(account *Account, pixKeyTo *PixKey, amount float64, description string) (*Transaction, error) {
 	transaction := Transaction{
 		AccountFrom: account,

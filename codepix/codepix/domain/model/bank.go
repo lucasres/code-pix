@@ -9,9 +9,9 @@ import (
 
 //Bank estrutura de dados que se referencia ao banco na nossa aplicacao
 type Bank struct {
-	Code     string     `json:"code" valid:"notnull"`
-	Name     string     `json:"name" valid:"notnull"`
-	Accounts []*Account `valid:"-"`
+	Code     string     `json:"code" valid:"notnull" gorm:"type:varchar(20)"`
+	Name     string     `json:"name" valid:"notnull" gorm:"type:varchar(255)"`
+	Accounts []*Account `gorm:"ForeignKey:BankID" valid:"-"`
 	Base     `valid:"required"`
 }
 
