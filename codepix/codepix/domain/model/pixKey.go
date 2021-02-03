@@ -10,13 +10,13 @@ import (
 
 const (
 	//PixKeyActiveStatus chave ativa
-	PixKeyActiveStatus   string = "active"
+	PixKeyActiveStatus string = "active"
 	//PixKeyInactiveStatus chave inativa
 	PixKeyInactiveStatus string = "inactive"
 	//PixKeyKindCPF tipo de chave CPF
-	PixKeyKindCPF        string = "cpf"
+	PixKeyKindCPF string = "cpf"
 	//PixKeyKindEmail tipo de chave email
-	PixKeyKindEmail      string = "email"
+	PixKeyKindEmail string = "email"
 )
 
 //PixKey representacao de uma chave pix no sistema
@@ -56,7 +56,7 @@ func (p *PixKey) isValid() error {
 	return nil
 }
 
-func newPixe(kind string, key string, account *Account) (*PixKey, error) {
+func NewPixKey(kind string, key string, account *Account) (*PixKey, error) {
 	pixKey := PixKey{
 		Key:     key,
 		Kind:    kind,
