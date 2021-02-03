@@ -10,14 +10,15 @@ import (
 
 const (
 	// TransactionPedding transacao pendente
-	TransactionPedding   string = "pedding"
+	TransactionPedding string = "pedding"
 	// TransactionCompleted transacao completada
 	TransactionCompleted string = "completed"
 	// TransactionError transacao com error
-	TransactionError     string = "error"
+	TransactionError string = "error"
 	// TransactionConfirmed transacao confirmada
 	TransactionConfirmed string = "confirmed"
 )
+
 //Transaction representacao de transacoes
 type Transaction struct {
 	AccountFrom       *Account `json:"account_from" valid:"notnull"`
@@ -35,6 +36,7 @@ type Transaction struct {
 type Transactions struct {
 	Transaction []Transaction
 }
+
 // TransactionRepositoryInterface contrato para criacao de um repository de transacoes
 type TransactionRepositoryInterface interface {
 	Register(transaction *Transaction) (*Transaction, error)

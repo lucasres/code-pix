@@ -1,15 +1,16 @@
 package db
 
 import (
-	"os"
 	"log"
+	"os"
 	"path/filepath"
-	"github.com/lucasres/code-pix/domain/model"
 	"runtime"
-	"github.com/joho/godotenv"
+
 	"github.com/jinzhu/gorm"
-	_ "gorm.io/driver/sqlite"
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
+	"github.com/lucasres/code-pix/domain/model"
+	_ "gorm.io/driver/sqlite"
 )
 
 func init() {
