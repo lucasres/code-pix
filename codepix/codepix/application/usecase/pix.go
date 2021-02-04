@@ -17,7 +17,7 @@ func (pixUseCase *PixUseCase) RegisterKey(key string, kind string, accountID str
 		return nil, err
 	}
 
-	pixUseCase.Repository.Register(pixKey)
+	pixUseCase.Repository.RegisterKey(pixKey)
 	if pixKey.ID == "" {
 		return nil, err
 	}

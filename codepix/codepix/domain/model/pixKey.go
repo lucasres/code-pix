@@ -31,11 +31,11 @@ type PixKey struct {
 
 //PixKeyRepositoryInterface contrato de repositorio
 type PixKeyRepositoryInterface interface {
-	Register(pixKey *PixKey) (*PixKey, error)
+	RegisterKey(pixKey *PixKey) error
 	FindKeyByKind(key string, kind string) (*PixKey, error)
-	AddBank(bank *Bank) (*Bank, error)
+	AddBank(bank *Bank) error
 	FindAccount(id string) (*Account, error)
-	AddAccount(account *Account) (*Account, error)
+	AddAccount(account *Account) error
 }
 
 func (p *PixKey) isValid() error {
