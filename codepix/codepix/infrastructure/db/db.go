@@ -17,7 +17,7 @@ func init() {
 	_, b, _, _ := runtime.Caller(0)
 	basepath := filepath.Dir(b)
 
-	err := godotenv.Load(basepath + "../../.env")
+	err := godotenv.Load(basepath + "/../../.env")
 
 	if err != nil {
 		log.Fatal("Fail load .env in DB init", err)
