@@ -34,6 +34,7 @@ func NewAccount(bank *Bank, number string, ownerName string) (*Account, error) {
 	}
 
 	account.ID = uuid.NewV4().String()
+	account.BankID = bank.ID
 	account.CreatedAt = time.Now()
 	account.UpdatedAt = time.Now()
 

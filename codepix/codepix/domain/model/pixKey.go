@@ -21,7 +21,7 @@ const (
 
 //PixKey representacao de uma chave pix no sistema
 type PixKey struct {
-	Kind      string   `json:"kind" valid:"notnul"`
+	Kind      string   `json:"kind" valid:"notnull"`
 	Key       string   `json:"key" valid:"notnull"`
 	AccountID string   `gorm:"column:account_id;type:uuid;not null" valid:"-"`
 	Account   *Account `json:"account" valid:"-"`

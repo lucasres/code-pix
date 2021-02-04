@@ -10,7 +10,7 @@ import (
 
 const (
 	// TransactionPedding transacao pendente
-	TransactionPedding string = "pedding"
+	TransactionPedding string = "pending"
 	// TransactionCompleted transacao completada
 	TransactionCompleted string = "completed"
 	// TransactionError transacao com error
@@ -21,11 +21,11 @@ const (
 
 //Transaction representacao de transacoes
 type Transaction struct {
-	AccountFrom       *Account `json:"account_from" valid:"notnull"`
+	AccountFrom       *Account `json:"account_from" valid:"-"`
 	AccountFromID     string   `gorm:"column:account_from_id;type:uuid;" valid:"notnull"`
 	Amount            float64  `json:"amount" valid:"notnull"`
 	PixKeyTo          *PixKey  `json:"pixkey_to" valid:"-"`
-	PixKeyIDTo        *PixKey  `gorm:"column:pix_key_id_to;type:uuid;" valid:"notnull"`
+	PixKeyIDTo        string   `gorm:"column:pix_key_id_to;type:uuid;" valid:"notnull"`
 	Status            string   `json:"status" valid:"notnull" gorm:"type:varchar(20)"`
 	Description       string   `json:"description" valid:"-" gorm:"type:varchar(255)"`
 	CancelDescription string   `json:"cancel_description" valid:"-" gorm:"type:varchar(255)"`
@@ -51,7 +51,7 @@ func (t *Transaction) isValid() error {
 		return err
 	}
 
-	if t.Amount >= 0 {
+	if t.Amount <= 0 {
 		return errors.New("Amount must great of than 0")
 	}
 
@@ -93,7 +93,7 @@ func (t *Transaction) Confirm() error {
 func (t *Transaction) Cancel(description string) error {
 	t.Status = TransactionError
 	t.UpdatedAt = time.Now()
-	t.Description = description
+	t.CancelDescription = description
 
 	err := t.isValid()
 
@@ -103,11 +103,13 @@ func (t *Transaction) Cancel(description string) error {
 // NewTransaction cria uma nova instancia de transacao
 func NewTransaction(account *Account, pixKeyTo *PixKey, amount float64, description string) (*Transaction, error) {
 	transaction := Transaction{
-		AccountFrom: account,
-		Description: description,
-		PixKeyTo:    pixKeyTo,
-		Amount:      amount,
-		Status:      TransactionPedding,
+		AccountFrom:   account,
+		Description:   description,
+		PixKeyTo:      pixKeyTo,
+		Amount:        amount,
+		Status:        TransactionPedding,
+		AccountFromID: account.ID,
+		PixKeyIDTo:    pixKeyTo.ID,
 	}
 
 	transaction.ID = uuid.NewV4().String()
